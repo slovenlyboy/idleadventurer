@@ -1,0 +1,11 @@
+EnemyID,EnemyName,Hp,Atk,Speed,ImagePass,isBoss,DropMoney
+1,スライム,10,1,5,image/enemy/1,0,2
+2,ゴブリン,6,2,3,image/enemy/2,0,5
+3,子ウルフ,3,2,7,image/enemy/3,0,2
+4,ゾンビ,10,3,2,image/enemy/4,0,3
+5,ウルフ,20,5,10,image/enemy/5,1,50
+6,トレント,15,5,3,image/enemy/6,0,10
+7,アルラウネ,10,4,5,image/enemy/7,0,5
+8,ヘビ,12,7,8,image/enemy/8,0,15
+9,ゴブリン兄貴,20,5,6,image/enemy/9,0,25
+10,ウッドキマイラ,50,8,15,image/enemy/10,1,100
