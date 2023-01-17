@@ -34,10 +34,10 @@ public class QuestButton : MonoBehaviour, IPointerClickHandler, IPointerDownHand
     {
 
         // Debug.Log("‰Ÿ‚³‚ê‚½!");  // ƒƒO‚ğo—Í
-        GameObject.Find("GameManager").GetComponent<GameManager>().SetStage(stageNum);
+        gameManager.SetStage(stageNum);
 
 
-        StartCoroutine(gameManager.changeScene("DungeonScene",0.5f));
+        StartCoroutine(gameManager.ChangeScene("DungeonScene",0.5f));
 
        
     }

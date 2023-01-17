@@ -11,8 +11,8 @@ public class SaveData : object
     // 所持金
     public int money;
 
-    //所持ユニットデータ（文字列で保持）
-    public string unitData;
+    //キャラデータ（文字列で保持）
+    public string charaData;
 
   
 
@@ -24,28 +24,28 @@ public class SaveData : object
         this.money = money;
     }
 
-
-    public void saveUnitData(String charaData) {
+    //キャラデータ保存
+    public void SaveCharaData(String charaData) {
 
         //jsonだと配列を一気に保存できないので分解して保存
-        this.unitData = charaData;
+        this.charaData = charaData;
         
     }
     
-
-    public String GetUnitData()
+    //キャラデータ取得
+    public String GetCharaData()
     {
-        if (unitData != null) {
-            return unitData;
+        if (charaData != null) {
+            return charaData;
         }
 
         return null;
     }
 
+    //キャラのステータスを文字リストで取得
+    public List<string> GetCharaStatus() {
 
-    public List<string> getUnitStatus() {
-
-        string str = unitData;
+        string str = charaData;
 
         string[] arr = str.Split(' ');
 
@@ -57,14 +57,14 @@ public class SaveData : object
         return list;
     }
 
-
+    //通常データの取得
     public string GetNormalData()
     {
         return "money: " + money;
     }
 
 
-
+    //所持金の取得
     public int GetMoney()
     {
         return  money;

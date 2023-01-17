@@ -7,8 +7,9 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-
+    //セーブデータを配置するパス
     string filePath;
+    //データそのもの
     SaveData save;
 
     GameManager gameManager;
@@ -16,26 +17,26 @@ public class SaveManager : MonoBehaviour
     void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
+        //セーブパス設定
         filePath = Application.persistentDataPath + "/" + ".savedata.json";
         save = new SaveData();
-
+        //データロード
         Load();
-
-
         //Debug.Log(save.GetJsonData());
 
     }
 
+    //所持金取得
     public int GetMoney() {
         return save.GetMoney();
     }
-
+    //所持金設定
     public void SetMoney(int money)
     {
          save.SetMoney(money);
     }
 
+    //キャラデータ作成（新規）
     public void CreateChara() {
 
         Chara data =  gameObject.AddComponent<Chara>();
@@ -48,36 +49,37 @@ public class SaveManager : MonoBehaviour
 
     }
 
+    //キャラデータ更新
     public void UpdateChara(string charaData)
     {
-        save.saveUnitData(charaData);
+        save.SaveCharaData(charaData);
 
         Save();
 
     }
 
 
-    public string GetUnit() {
+    public string GetChara() {
 
-        if (save.GetUnitData() != null) {
-            return save.GetUnitData();
+        if (save.GetCharaData() != null) {
+            return save.GetCharaData();
         }
 
         return null;
     }
 
-    public List<string> GetUnitStatus()
+    public List<string> GetCharaStatus()
     {
 
-        if (save.GetUnitData() != null)
+        if (save.GetCharaData() != null)
         {
-            return save.getUnitStatus();
+            return save.GetCharaStatus();
         }
 
         return null;
     }
 
-
+    //現在のデータをjson形式で保存する
     public void Save()
     {
         string json = JsonUtility.ToJson(save);

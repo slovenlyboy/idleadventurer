@@ -12,14 +12,14 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
+    //所持金
     [SerializeField]
     int money = 0;
+    //所持金表示用テキスト
     [SerializeField]
     TextMeshProUGUI moneyText;
-
-    public static GameManager Instance = null;
-
+    //ゲームマネージャーのインスタンス
+    public static GameManager instance = null;
     //　データを生成し保持しているスクリプト
     private SaveManager saveManager;
 
@@ -29,28 +29,31 @@ public class GameManager : MonoBehaviour
     public int tmpAtk;
     public int tmpSpeed;
 
-
+    //成長に使う金額（暫定）
     public int needGoldHP = 10;
     public int needGoldAtk = 100;
     public int needGoldSpeed = 30;
 
+    //現行のステージ
     public int stage = 1;
 
+    //保持している仕事
     [SerializeField]
     public Work[] Works;
 
+    //フェードインで使用する画像
     [SerializeField]
     Image fadeImage;
-
+    //フェード管理で使用するコルーチン（切り替え時にリセットするため）
     Coroutine _fadeCorutine;
 
 
     void Awake()
     {
 
-        if (Instance == null)
-            Instance = this;
-        else if (Instance != this)
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
@@ -60,42 +63,39 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //データを読み込む
         saveManager = GetComponent<SaveManager>();
-
         saveManager.Load();
 
+        //所持金の取得
         money = saveManager.GetMoney();
 
         //ヒーローのステータスを保持
-        string[] arr = GetUnit()[0].Split(':');
+        string[] arr = GetChara()[0].Split(':');
         tmpName = arr[1];
-        arr = GetUnit()[1].Split(':');
+        arr = GetChara()[1].Split(':');
         tmpHP = int.Parse(arr[1]);
-        arr = GetUnit()[2].Split(':');
+        arr = GetChara()[2].Split(':');
         tmpAtk = int.Parse(arr[1]);
-        arr = GetUnit()[3].Split(':');
+        arr = GetChara()[3].Split(':');
         tmpSpeed = int.Parse(arr[1]);
 
         // イベントにイベントハンドラーを追加
         SceneManager.sceneLoaded += SceneLoaded;
-
+        //最初のBGM再生
         gameObject.GetComponent<SoundManager>().PlayBGM(SceneManager.GetActiveScene().name);
 
     }
 
-    // イベントハンドラー（イベント発生時に動かしたい処理）
+    // シーン読み込み時のイベントハンドラー
     void SceneLoaded(Scene nextScene, LoadSceneMode mode)
     {
-        Debug.Log(nextScene.name);
-        Debug.Log(mode);
-
+        //Debug.Log(nextScene.name);
+        //Debug.Log(mode);
+        //シーン切り替え時にBGMを切り替える
         gameObject.GetComponent<SoundManager>().PlayBGM(SceneManager.GetActiveScene().name);
 
     }
-
-
-
-
 
     // Update is called once per frame
     void Update()
@@ -103,21 +103,24 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //キャラ作成（初期化も含む）
     public void CreateChara() {
 
         saveManager.CreateChara();
 
         saveManager.Save();
 
-        updateMenu();
+        UpdateMenu();
 
     }
 
-    public List<string> GetUnit() {
-        return saveManager.GetUnitStatus();
+    //セーブデータから主人公のステータスを文字リストで取得
+    public List<string> GetChara() {
+        return saveManager.GetCharaStatus();
     }
 
-    public void addMoney(int getMoney)
+    //お金を増やす（セーブも行う）
+    public void AddMoney(int getMoney)
     {
 
         money += getMoney;
@@ -127,6 +130,7 @@ public class GameManager : MonoBehaviour
         saveManager.Save();
     }
 
+    //所持金を取得する
     public int GetMoney()
     {
 
@@ -134,18 +138,18 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //一時的に保持したステータスを文字リストで返す
     public List<string> GetTmpStatusData() {
 
 
         //現状のデータからステータスを取得
-
-        string[] arr = GetUnit()[0].Split(':');
+        string[] arr = GetChara()[0].Split(':');
         tmpName = arr[1];
-        arr = GetUnit()[1].Split(':');
+        arr = GetChara()[1].Split(':');
         tmpHP = int.Parse(arr[1]);
-        arr = GetUnit()[2].Split(':');
+        arr = GetChara()[2].Split(':');
         tmpAtk = int.Parse(arr[1]);
-        arr = GetUnit()[3].Split(':');
+        arr = GetChara()[3].Split(':');
         tmpSpeed = int.Parse(arr[1]);
 
 
@@ -163,39 +167,46 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //所持金のリセット
     public void ResetMoney(){
         money = 0;
+        saveManager.SetMoney(money);
         saveManager.Save();
-        updateGold();
+       //表示を更新する
+        UpdateGold();
     }
 
+    //名前を変更する
     public void  ChangeName(string newName)
     {
 
         tmpName = newName;
-        saveManager.UpdateChara(UpdateUnitData());
+        saveManager.UpdateChara(UpdateCharaData());
         saveManager.Save();
 
-
-        updateMenu();
+        //表示更新
+        UpdateMenu();
 
     }
 
-
+    //ステータス取得に必要な金額を取得
+    //HP
     public int GetNeedMoneyHP() {
         return needGoldHP;
     }
+    //ATK
     public int GetNeedMoneyAtk()
     {
         return needGoldAtk;
     }
+    //Speed
     public int GetNeedMoneySpeed()
     {
         return needGoldSpeed;
     }
 
-
-
+    //各ステータスの成長
+    //HP
     public void LevelupHp() {
 
 
@@ -208,7 +219,7 @@ public class GameManager : MonoBehaviour
 
 
             saveManager.SetMoney(money);
-            saveManager.UpdateChara(UpdateUnitData());
+            saveManager.UpdateChara(UpdateCharaData());
             saveManager.Save();
 
         }
@@ -217,10 +228,12 @@ public class GameManager : MonoBehaviour
             GameObject.Find("textWindow").GetComponent<MoveText>().ReadText("お 金 が た り ま せ ん よ？. 早 く 稼 い で き て く だ さ い ね");
         }
 
-        updateMenu();
+        //表示更新
+        UpdateMenu();
 
     }
 
+    //ATK
     public void LevelupAtk()
     {
 
@@ -234,7 +247,7 @@ public class GameManager : MonoBehaviour
 
 
             saveManager.SetMoney(money);
-            saveManager.UpdateChara(UpdateUnitData());
+            saveManager.UpdateChara(UpdateCharaData());
             saveManager.Save();
 
         }
@@ -244,9 +257,10 @@ public class GameManager : MonoBehaviour
             GameObject.Find("textWindow").GetComponent<MoveText>().ReadText("お 金 が た り ま せ ん よ？. 早 く 稼 い で き て く だ さ い ね");
         }
 
-        updateMenu();
+        UpdateMenu();
     }
 
+    //ATK
     public void LevelupSpeed()
     {
 
@@ -259,7 +273,7 @@ public class GameManager : MonoBehaviour
 
 
             saveManager.SetMoney(money);
-            saveManager.UpdateChara(UpdateUnitData());
+            saveManager.UpdateChara(UpdateCharaData());
             saveManager.Save();
 
         }
@@ -269,23 +283,24 @@ public class GameManager : MonoBehaviour
             GameObject.Find("textWindow").GetComponent<MoveText>().ReadText("お 金 が た り ま せ ん よ？. 早 く 稼 い で き て く だ さ い ね");
         }
 
-        updateMenu();
+        UpdateMenu();
     }
 
-    public string UpdateUnitData() {
+    //一時保存したキャラデータを返す
+    public string UpdateCharaData() {
 
         return "name:" + tmpName + " hp:" + tmpHP + " atk:" + tmpAtk + " speed:" + tmpSpeed;
     }
 
 
     //表示を更新する
-    public void updateMenu() {
+    public void UpdateMenu() {
 
         GameObject.Find("StatusPanel").GetComponent<statusText>().UpdateStatus();
     }
 
-
-    public void updateGold()
+    //表示金額の更新
+    public void UpdateGold()
     {
 
         if (!moneyText) {
@@ -310,20 +325,20 @@ public class GameManager : MonoBehaviour
 
 
     //シーン切り替え　（フェード時間）
-    public IEnumerator changeScene(string sceneName ,float time) {
+    public IEnumerator ChangeScene(string sceneName ,float time) {
 
-        _fadeCorutine = StartCoroutine(fadeAnime(time,"fadeIn"));
+        _fadeCorutine = StartCoroutine(FadeAnime(time,"fadeIn"));
 
         yield return new WaitForSeconds(time);
 
         SceneManager.LoadScene(sceneName);
 
-        _fadeCorutine = StartCoroutine(fadeAnime(time, "fadeOut"));
+        _fadeCorutine = StartCoroutine(FadeAnime(time, "fadeOut"));
 
     }
 
-
-    IEnumerator fadeAnime(float time, string stg)
+    //フェードのアニメーション
+    IEnumerator FadeAnime(float time, string stg)
     {
 
         fadeImage.enabled = true;

@@ -45,16 +45,16 @@ public class Work : MonoBehaviour
 
                 currentTime = 0;
 
-                gameManager.addMoney(getMoney);
+                gameManager.AddMoney(getMoney);
 
-                gameManager.updateGold();
+                gameManager.UpdateGold();
 
             }
         }
     }
 
 
-    //仕事をセットして
+    //仕事をセットする
     public void SetWork(string name,float time,int money)
     {
 

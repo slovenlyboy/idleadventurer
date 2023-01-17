@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 156949981}
   - component: {fileID: 156949980}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: HPBer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e740bd2f270be498d21479fc2b550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 1257783806}
+  unit: {fileID: 1257783806}
   bar: {fileID: 156949981}
 --- !u!114 &156949981
 MonoBehaviour:
@@ -1466,7 +1466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e740bd2f270be498d21479fc2b550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 625241347}
+  unit: {fileID: 0}
   bar: {fileID: 733518964}
 --- !u!114 &733518964
 MonoBehaviour:
@@ -2336,7 +2336,7 @@ GameObject:
   - component: {fileID: 1203100440}
   - component: {fileID: 1203100439}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: HPBer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2376,7 +2376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e740bd2f270be498d21479fc2b550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 507509206}
+  unit: {fileID: 507509206}
   bar: {fileID: 1203100440}
 --- !u!114 &1203100440
 MonoBehaviour:
@@ -2644,7 +2644,7 @@ GameObject:
   - component: {fileID: 1336674346}
   - component: {fileID: 1336674345}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: HPBer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2684,7 +2684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e740bd2f270be498d21479fc2b550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 523796123}
+  unit: {fileID: 523796123}
   bar: {fileID: 1336674346}
 --- !u!114 &1336674346
 MonoBehaviour:
@@ -3649,7 +3649,7 @@ GameObject:
   - component: {fileID: 1698747566}
   - component: {fileID: 1698747565}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: HPBer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3689,7 +3689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e740bd2f270be498d21479fc2b550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 1009680989}
+  unit: {fileID: 1009680989}
   bar: {fileID: 1698747566}
 --- !u!114 &1698747566
 MonoBehaviour:
@@ -4575,7 +4575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e740bd2f270be498d21479fc2b550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 275634069}
+  unit: {fileID: 0}
   bar: {fileID: 2075731070}
 --- !u!114 &2075731070
 MonoBehaviour:

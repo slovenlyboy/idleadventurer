@@ -31,12 +31,12 @@ public class statusText : MonoBehaviour
         gameManager = GameObject.Find("GameManager");
 
 
-       /* foreach (string name in gameManager.GetComponent<GameManager>().GetUnit())
-        {
-            Debug.Log(name);
-        }*/
+        /* foreach (string name in gameManager.GetComponent<GameManager>().GetChara())
+         {
+             Debug.Log(name);
+         }*/
 
-       
+
         if (gameManager.GetComponent<GameManager>().GetTmpStatusData() != null)
         {
             NameText.text = gameManager.GetComponent<GameManager>().GetTmpStatusData()[0];

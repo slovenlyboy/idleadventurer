@@ -30,43 +30,47 @@ public class BattleManager : MonoBehaviour
 
     List<Chara> AliveEnemyList = new List<Chara>();
 
-   
+    //最大ウェーブ数
     int MaxWave = 5;
-
+    //現在のウェーブ数
     int CurrentWave = 1;
-
+    //敵のカウント
     int enemyCount = 1;
-
+    //戦闘アクティブ状態か
     bool isActive = true;
 
+    //戦闘状況を表示するテキスト
     [SerializeField]
     TextMeshProUGUI battleText1;
     [SerializeField]
     TextMeshProUGUI battleText2;
-
+    //所持金を表示するテキスト
     [SerializeField]
     TextMeshProUGUI moneyText;
-
+    //ゲームマネージャー
     GameManager gameManager;
-
+    //戦闘se
     [SerializeField]
     AudioClip[] se;
-
     AudioSource audioSource;
+    //敵情報データ
     EnemyInformation enemyInfo;
 
+    //所持金
     float money;
 
+    //戦闘制御で使用するコルーチン
     Coroutine _coroutine;
     Coroutine _coroutine2;
 
-
+    //ステージ背景（切り替え用に持っておく）
     [SerializeField]
     Image stageBG;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        //敵情報の取得
         enemyInfo = new EnemyInformation();
         enemyInfo.Init();
 
@@ -74,6 +78,7 @@ public class BattleManager : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
 
+        //エンカウント
         encounter();
 
         //StartBattle();
@@ -154,6 +159,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    //戦闘の処理
     public void Battle()
     {
 
@@ -224,7 +230,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
-
+    //生存確認
     void AliveCheck()
     {
         enemyAliveCount = 0;
@@ -295,7 +301,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-
+    //戦闘のダメージチェック
     void DamageCheck(Chara attackUnit, Chara targetUnit)
     {
         if (attackUnit.GetStatus() == Chara.STATUS.Alive)
@@ -313,23 +319,24 @@ public class BattleManager : MonoBehaviour
 
                 int getMoney = targetUnit.GetComponent<Enemy>().GetDropMoney();
 
-                gameManager.addMoney(getMoney);
+                gameManager.AddMoney(getMoney);
 
                 StartCoroutine(MoneyAnimation(getMoney, 0.5f));
             }
 
-            StartCoroutine(showBattleText(attackUnit.UnitName + "の攻撃",targetUnit.UnitName + "に" + damage + "のダメージ！"));
+            StartCoroutine(ShowBattleText(attackUnit.UnitName + "の攻撃",targetUnit.UnitName + "に" + damage + "のダメージ！"));
 
 
         }
         else {
-            StartCoroutine(showBattleText("",""));
+            StartCoroutine(ShowBattleText("",""));
         }
 
 
     }
 
-    private IEnumerator showBattleText(string text1, string text2) {
+    //戦闘テキスト表示
+    private IEnumerator ShowBattleText(string text1, string text2) {
 
         battleText1.text = "";
         battleText2.text = "";
@@ -375,7 +382,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-
+    //キャラの動き（攻撃、被ダメ）
     void MoveAction(GameObject unit , GameObject hitUnit) {
 
         Vector3 scale = unit.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale ;
@@ -392,7 +399,7 @@ public class BattleManager : MonoBehaviour
                 hitUnit.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().DOPunchPosition(new Vector3(50, 0, 0), 0.4f).OnComplete(() => {
 
 
-                    hitUnit.transform.GetChild(0).GetChild(1).GetComponent<HpBer>().takeDamage();
+                    hitUnit.transform.GetChild(0).GetChild(1).GetComponent<HpBer>().TakeDamage();
                     //死んでいたら
                     if (hitUnit.GetComponent<Chara>().GetStatus() == Chara.STATUS.Dead) {
 
@@ -413,33 +420,25 @@ public class BattleManager : MonoBehaviour
     }
 
 
-
-    void setUnits() { 
-    
-    
-    
-    }
-
     
     //遭遇演出
     void encounter() {
 
-
         //ヒーローのステータスを設定
-         gameManager.GetUnit();
-        string[] arr = gameManager.GetUnit()[0].Split(':');
+         gameManager.GetChara();
+        string[] arr = gameManager.GetChara()[0].Split(':');
         Charas[0].SetName(arr[1]);
-        arr = gameManager.GetUnit()[1].Split(':');
+        arr = gameManager.GetChara()[1].Split(':');
         Charas[0].SetHP(int.Parse(arr[1]));
-        arr = gameManager.GetUnit()[2].Split(':');
+        arr = gameManager.GetChara()[2].Split(':');
         Charas[0].SetAtk(int.Parse(arr[1]));
-        arr = gameManager.GetUnit()[3].Split(':');
+        arr = gameManager.GetChara()[3].Split(':');
         Charas[0].SetSpeed(int.Parse(arr[1]));
 
         Charas[0].status = Chara.STATUS.Alive;
         Charas[0].transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
 
-        Charas[0].transform.GetChild(0).GetChild(1).GetComponent<HpBer>().init();
+        Charas[0].transform.GetChild(0).GetChild(1).GetComponent<HpBer>().Init();
 
 
 
@@ -507,7 +506,7 @@ public class BattleManager : MonoBehaviour
             }
 
            
-
+            //敵の各種ステータス設定
             enemy.SetName(enemyInfo.enemyName[enemyId]);
             enemy.SetHP(enemyInfo.hp[enemyId]);
             enemy.SetAtk(enemyInfo.atk[enemyId]);
@@ -516,6 +515,7 @@ public class BattleManager : MonoBehaviour
             enemy.SetIsBoss(enemyInfo.isBoss[enemyId]);
             enemy.status = Chara.STATUS.Alive;
 
+            //ボスだった場合は大きくする
             if (enemy.GetIsBoss() == 1)
             {
 
@@ -532,8 +532,8 @@ public class BattleManager : MonoBehaviour
 
             enemy.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
             enemy.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(enemyInfo.imageAddress[enemyId]);
-            enemy.transform.GetChild(0).GetChild(1).GetComponent<HpBer>().init();
-            Debug.Log(enemyInfo.imageAddress[enemyId]);
+            enemy.transform.GetChild(0).GetChild(1).GetComponent<HpBer>().Init();
+           
           
             battleText1.text += enemy.UnitName;
             battleText1.text += "　";
@@ -548,7 +548,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
-
+    //数秒待ってから戦闘処理を開始する
     private IEnumerator DelayCoroutine()
     {
         yield return new WaitForSeconds(2);
@@ -557,15 +557,16 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    //メインシーンに戻る（戦闘終了時）
     private IEnumerator BackToMain()
     {
         yield return new WaitForSeconds(3);
 
 
-        StartCoroutine(gameManager.changeScene("MainScene", 0.5f));
+        StartCoroutine(gameManager.ChangeScene("MainScene", 0.5f));
     }
 
-
+    //お金の増減アニメーション
     IEnumerator MoneyAnimation(float addMoney, float time)
     {
         //前回のスコア

@@ -15,9 +15,9 @@ public class CheatButton : MonoBehaviour, IPointerClickHandler, IPointerDownHand
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        gameManager.GetComponent<GameManager>().addMoney(1000);
+        gameManager.GetComponent<GameManager>().AddMoney(1000);
 
-        gameManager.GetComponent<GameManager>().updateGold();
+        gameManager.GetComponent<GameManager>().UpdateGold();
 
     }
 

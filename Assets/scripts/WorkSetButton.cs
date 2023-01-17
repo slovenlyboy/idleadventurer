@@ -41,13 +41,13 @@ public class WorkSetButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("‚Ì‚Á‚½");
+       // Debug.Log("‚Ì‚Á‚½");
 
         panel.SetActive(true);
     }
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("‚Å‚½‚Ÿ");
+       // Debug.Log("‚Å‚½‚Ÿ");
 
         panel.SetActive(false);
     }

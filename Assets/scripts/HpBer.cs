@@ -7,7 +7,7 @@ public class HpBer : MonoBehaviour
 {
 
     [SerializeField]
-    Chara Unit = null;
+    Chara unit = null;
 
     int maxHp;
     int currentHp;
@@ -27,19 +27,19 @@ public class HpBer : MonoBehaviour
         
     }
 
+    //HPバーを初期化する
+    public void Init() {
 
-    public void init() {
-
-        maxHp = Unit.GetHP();
+        maxHp = unit.GetHP();
 
         bar.value = 1;
 
         currentHp = maxHp;
     }
 
-
-    public void takeDamage() {
-        currentHp = Unit.GetHP();
+    //被ダメージの処理
+    public void TakeDamage() {
+        currentHp = unit.GetHP();
 
         bar.value = (float)currentHp / (float)maxHp; ;
     }
