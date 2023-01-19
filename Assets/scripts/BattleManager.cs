@@ -49,6 +49,8 @@ public class BattleManager : MonoBehaviour
     TextMeshProUGUI moneyText;
     //ゲームマネージャー
     GameManager gameManager;
+
+    EffectManager effectManager;
     //戦闘se
     [SerializeField]
     AudioClip[] se;
@@ -75,6 +77,7 @@ public class BattleManager : MonoBehaviour
         enemyInfo.Init();
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        effectManager = GameObject.Find("EffectManager").GetComponent<EffectManager>();
 
         audioSource = GetComponent<AudioSource>();
 
@@ -390,7 +393,10 @@ public class BattleManager : MonoBehaviour
 
 
         audioSource.PlayOneShot(se[0]);
-         unit.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().DOScale(new Vector3(scalemax.x, scalemax.y, scalemax.z), 0.4f).OnComplete(() =>
+
+        effectManager.startEffect("Slash", hitUnit.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().localPosition);
+
+        unit.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().DOScale(new Vector3(scalemax.x, scalemax.y, scalemax.z), 0.4f).OnComplete(() =>
         {
 
             unit.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().DOScale(new Vector3(scale.x, scale.y, scale.z), 0.4f).OnComplete(() =>
